@@ -77,7 +77,7 @@ async function editorDocumentFromUuid( uuid ){
             mu:uuid ${sparqlEscapeString( uuid )}
        }
      }`);
-  
+
   if( queryResult.results.bindings.length === 0 )
     throw `No content found for EditorDocument ${uuid}`;
   const result = queryResult.results.bindings[0];

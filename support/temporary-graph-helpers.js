@@ -7,7 +7,7 @@ import { updateSudo as update } from './auth-sudo';
 
 /**
  * Saves the supplied RDFa graph in the triplestore.
- * 
+ *
  * This may be a desired step in processing the contents which ought
  * to be saved in the final triplestore.  The contents can initially
  * be writen to this temporary store.  From here, more complex queries
@@ -15,7 +15,7 @@ import { updateSudo as update } from './auth-sudo';
  * shared graph.
  *
  * @method saveGraphInTriplestore
- * 
+ *
  * @param {RdfaGraph} graph Graph which contains the triples
  * @param {string} graphUri URI in which the contents should be saved
  *
@@ -29,7 +29,7 @@ async function saveGraphInTriplestore( graph, graphUri ) {
  * Removes all content from a temporary graph
  *
  * @method cleanTempGraph
- * 
+ *
  * @param {string} tempGraph Temporary graph which should be cleared.
  *
  * @return {Promise} Promise which emits successfully if the graph was

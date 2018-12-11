@@ -1,20 +1,20 @@
 {
-  "name": "notulen-importer-service",
-  "version": "0.4.1",
-  "description": "mu-semtech import microservice for legal documents",
+  "name": "gemeente-ocmw-sync-service",
+  "version": "0.0.1",
+  "description": "microservice to sync structured data between different entities",
   "main": "app.js",
   "dependencies": {
-    "jsdom": "^11.6.2",
-    "graph-rdfa-processor": "https://github.com/erikap/graph-rdfa-processor.git"
+    "fs-extra": "^7.0.1",
+    "graph-rdfa-processor": "https://github.com/erikap/graph-rdfa-processor.git",
+    "jsdom": "^11.6.2"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lblod/notulen-importer-service.git"
+    "url": "git+https://github.com/lblod/gemeente-ocmw-sync-service.git"
   },
   "author": "redpencil.io",
   "license": "MIT"
