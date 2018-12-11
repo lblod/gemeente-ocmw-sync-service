@@ -12,8 +12,8 @@ INSERT {
 WHERE {
   GRAPH <$tmpGraph> {
      ?artikel a besluit:Artikel;
-        ext:bekrachtigtAanstellingVan ?mandataris.
-     ?mandataris ?p ?o.
+        ext:bekrachtigtAanstellingVan ?s.
+     ?s ?p ?o.
      BIND(REPLACE(STR(?s), 'http://data.lblod.info/id/mandatarissen/','') as ?uuid)
   }
 }
