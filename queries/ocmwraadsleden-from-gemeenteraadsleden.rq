@@ -1,0 +1,50 @@
+PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
+PREFIX mu: <http://mu.semte.ch/vocabularies/core/>
+PREFIX besluit: <http://data.vlaanderen.be/ns/besluit#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX eli: <http://data.europa.eu/eli/ontology#>
+PREFIX mandaat: <http://data.vlaanderen.be/ns/mandaat#>
+PREFIX org: <http://www.w3.org/ns/org#>
+
+
+INSERT {
+  GRAPH <$syncGraph> {
+    ?newMandataris a mandaat:Mandataris.
+    ?newMandataris org:holds ?mandaatLRMW.
+    ?newMandataris mu:uuid ?newMandatarisUuid .
+    ?newMandataris mandaat:isBestuurlijkeAliasVan ?persoon .
+    ?newMandataris mandaat:start ?start.
+    ?newMandataris mandaat:einde ?einde.
+    ?newMandataris mandaat:status ?status.
+  }
+}
+WHERE {
+      GRAPH <$tmpGraph> {
+       ?s org:holds ?mandaat .
+                          # gemeenteraadslid
+       ?mandaat org:role <http://data.vlaanderen.be/id/concept/BestuursfunctieCode/5ab0e9b8a3b2ca7c5e000011> .
+       ?s mandaat:isBestuurlijkeAliasVan ?persoon .
+       OPTIONAL { ?s mandaat:start ?start } .
+       OPTIONAL { ?s mandaat:einde ?einde } .
+       OPTIONAL { ?s mandaat:status ?status } .
+
+       BIND(SHA256(CONCAT(STR(?s), STR(RAND()), STR(?persoon), STRUUID())) as ?newMandatarisUuid) . # add randomness, since UUID is buggy
+       BIND(IRI(CONCAT("http://data.lblod.info/id/mandatarissen/", ?newMandatarisUuid)) AS ?newMandataris) .
+
+     }
+
+     GRAPH <http://mu.semte.ch/graphs/public> {
+       ?bot org:hasPost ?mandaat .
+       ?bot mandaat:isTijdspecialisatieVan ?bestuursorgaan .
+       ?bestuursorgaan besluit:bestuurt ?bestuurseenheid .
+       ?bestuurseenheid besluit:werkingsgebied ?werkingsgebied .
+       ?ocmw besluit:werkingsgebied ?werkingsgebied.
+       ?ocmw besluit:classificatie <http://data.vlaanderen.be/id/concept/BestuurseenheidClassificatieCode/5ab0e9b8a3b2ca7c5e000002> .
+       ?ocmwO besluit:bestuurt ?ocmw .
+       ?ocmwOT mandaat:isTijdspecialisatieVan ?ocmwO.
+       ?ocmwOT mandaat:bindingStart "2019-01-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+       ?ocmwOT org:hasPost ?mandaatLRMW .
+                             # lid van raad voor maatschappelijk welzijn
+       ?mandaatLRMW org:role <http://data.vlaanderen.be/id/concept/BestuursfunctieCode/5ab0e9b8a3b2ca7c5e000015> .
+     }
+}
