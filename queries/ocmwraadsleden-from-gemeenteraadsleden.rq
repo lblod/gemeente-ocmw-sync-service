@@ -28,7 +28,11 @@ WHERE {
        OPTIONAL { ?s mandaat:einde ?einde } .
        OPTIONAL { ?s mandaat:status ?status } .
 
-       BIND(SHA256(CONCAT(STR(?s), STR(RAND()), STR(?persoon), STRUUID())) as ?newMandatarisUuid) . # add randomness, since UUID is buggy
+
+       OPTIONAL { ?s ext:aTriggerForUuid ?optionalID } .
+       BIND(IF(BOUND(?optionalID), ?optionalID, STRUUID()) as ?newMandatarisUuid) .
+
+       #BIND(SHA256(CONCAT(STR(?s), STR(RAND()), STR(?persoon), STRUUID())) as ?newMandatarisUuid) . # add randomness, since UUID is buggy
        BIND(IRI(CONCAT("http://data.lblod.info/id/mandatarissen/", ?newMandatarisUuid)) AS ?newMandataris) .
 
      }
