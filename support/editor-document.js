@@ -83,6 +83,7 @@ async function editorDocumentFromUuid( uuid ){
   const result = queryResult.results.bindings[0];
 
   const doc = new EditorDocument({
+    id: uuid,
     uri: result.uri.value,
     // title: result.title,
     context: JSON.parse( result.context.value ),

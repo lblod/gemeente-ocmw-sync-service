@@ -1,7 +1,7 @@
 import { saveGraphInTriplestore, cleanTempGraph } from './temporary-graph-helpers';
 import { findFirstNodeOfType, findAllNodesOfType } from './dom-helpers';
 import { graphForDomNode, removeBlankNodes } from './rdfa-helpers';
-import { sparqlEscapeUri, sparqlEscapeDateTime, uuid } from 'mu';
+import { sparqlEscapeString, sparqlEscapeUri, sparqlEscapeDateTime, uuid } from 'mu';
 import { querySudo as query, updateSudo as update } from './auth-sudo';
 import fs from 'fs-extra';
 
@@ -142,16 +142,35 @@ async function syncDocument(syncGraph, document) {
     }
   }
   await update(`DROP SILENT GRAPH ${sparqlEscapeUri(tmpGraph)}`);
+  const syncID = uuid();
   await update(`
+       PREFIX mu:   <http://mu.semte.ch/vocabularies/core/>
        PREFIX dcterms: <http://purl.org/dc/terms/>
        PREFIX void: <http://rdfs.org/ns/void#>
        INSERT DATA {
           GRAPH ${sparqlEscapeUri(syncGraph)} {
              ${sparqlEscapeUri(syncGraph)} a void:Dataset;
+                                           mu:uuid ${sparqlEscapeString(syncID)};
                                            dcterms:created ${sparqlEscapeDateTime(new Date())};
                                            dcterms:source ${sparqlEscapeUri(document.uri)}.
           }
        }`);
-  return syncGraph;
+  return {
+    data: {
+      type: "sync",
+      id: syncID,
+      attributes: {
+        uri: syncGraph
+      },
+      relationships: {
+        document: {
+          id: document.id
+        }
+      },
+      links: {
+        self: `/sync/${syncID}`
+      }
+    }
+  };
 };
 export { hasValidBody, syncDocument, fetchSession, fetchRelatedOcwm };
