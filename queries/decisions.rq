@@ -6,6 +6,7 @@ PREFIX eli: <http://data.europa.eu/eli/ontology#>
 INSERT {
   GRAPH <$syncGraph> {
     ?s ?p ?o.
+    ?s <http://www.semanticdesktop.org/ontologies/2007/08/15/nao#score> "10"^^xsd:float.
     ?s mu:uuid ?uuid.
   }
 }
