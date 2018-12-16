@@ -5,7 +5,8 @@ PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX eli: <http://data.europa.eu/eli/ontology#>
 PREFIX mandaat: <http://data.vlaanderen.be/ns/mandaat#>
 PREFIX org: <http://www.w3.org/ns/org#>
-
+PREFIX persoon: <http://data.vlaanderen.be/ns/persoon#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
 INSERT {
   GRAPH <$syncGraph> {
@@ -20,10 +21,12 @@ INSERT {
 }
 WHERE {
       GRAPH <$tmpGraph> {
+       ?s ^ext:bekrachtigtAanstellingVan ?artikel .
        ?s org:holds ?mandaat .
                           # gemeenteraadslid
        ?mandaat org:role <http://data.vlaanderen.be/id/concept/BestuursfunctieCode/5ab0e9b8a3b2ca7c5e000011> .
        ?s mandaat:isBestuurlijkeAliasVan ?persoon .
+
        OPTIONAL { ?s mandaat:start ?start } .
        OPTIONAL { ?s mandaat:einde ?einde } .
        OPTIONAL { ?s mandaat:status ?status } .
