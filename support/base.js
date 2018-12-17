@@ -164,7 +164,7 @@ async function syncDocument(syncGraph, document) {
       },
       relationships: {
         document: {
-          id: document.id
+          data : { type: 'editor-documents', id: document.id }
         }
       },
       links: {
