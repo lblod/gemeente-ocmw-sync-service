@@ -41,6 +41,7 @@ WHERE {
 
      GRAPH <http://mu.semte.ch/graphs/public> {
        ?bot org:hasPost ?mandaat .
+       ?bot mandaat:bindingStart ?botStart.
        ?bot mandaat:isTijdspecialisatieVan ?bestuursorgaan .
        ?bestuursorgaan besluit:bestuurt ?bestuurseenheid .
        ?bestuurseenheid besluit:werkingsgebied ?werkingsgebied .
@@ -48,7 +49,7 @@ WHERE {
        ?ocmw besluit:classificatie <http://data.vlaanderen.be/id/concept/BestuurseenheidClassificatieCode/5ab0e9b8a3b2ca7c5e000002> .
        ?ocmwO besluit:bestuurt ?ocmw .
        ?ocmwOT mandaat:isTijdspecialisatieVan ?ocmwO.
-       ?ocmwOT mandaat:bindingStart "2019-01-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+       ?ocmwOT mandaat:bindingStart ?botStart .
        ?ocmwOT org:hasPost ?mandaatLRMW .
                              # lid van raad voor maatschappelijk welzijn
        ?mandaatLRMW org:role <http://data.vlaanderen.be/id/concept/BestuursfunctieCode/5ab0e9b8a3b2ca7c5e000015> .
